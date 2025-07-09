@@ -1,0 +1,123 @@
+{% extends "website/base.html" %}
+{% load static %}
+
+{% block title %}{{ article.title }} - Kilinto Industrial Park{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+<section class="py-5 text-white" style="background-color: #001a33; height: 120px; display: flex; align-items: center;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h3 class="fw-bold mb-1">News</h3>
+                <p class="lead">News Details</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Main Article Content -->
+<article class="py-5">
+
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb justify-content-center"> <!-- Added justify-content-center -->
+                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'news' %}">News</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ article.title|truncatewords:5 }}</li>
+            </ol>
+        </nav>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <!-- Article Header -->
+                <header class="mb-4">
+                    {% if article.is_highlight %}
+                    <span class="badge bg-warning mb-2">Featured</span>
+                    {% endif %}
+                    <h3 class="fw-bold mb-3">{{ article.title }}</h3>
+                    <div class="d-flex align-items-center text-muted mb-4">
+                        <i class="far fa-calendar-alt me-2"></i>
+                        <time datetime="{{ article.published_date|date:'Y-m-d' }}">
+                            {{ article.published_date|date:"F j, Y" }}
+                        </time>
+                    </div>
+                </header>
+
+                <!-- Featured Image -->
+                <figure class="mb-4">
+                    <img src="{{ article.image.url }}" alt="{{ article.title }}" class="img-fluid rounded shadow">
+                    {% if article.image_caption %}
+                    <figcaption class="mt-2 text-muted small">{{ article.image_caption }}</figcaption>
+                    {% endif %}
+                </figure>
+
+                <!-- Article Content -->
+                <div class="article-content">
+                    {{ article.content|safe }}
+                </div>
+
+                <!-- Tags/Categories (optional) -->
+                <div class="mt-5 pt-4 border-top">
+                    <div class="d-flex flex-wrap gap-2">
+                        <span class="badge bg-secondary">Industrial Park</span>
+                        <span class="badge bg-secondary">Investment</span>
+                        <span class="badge bg-secondary">Development</span>
+                    </div>
+                </div>
+
+                <!-- Social Sharing -->
+                <div class="mt-5">
+                    <h5 class="mb-3">Share this article:</h5>
+                    <div class="d-flex gap-3">
+                        <a href="https://twitter.com/intent/tweet?text={{ article.title|urlencode }}&url={{ request.build_absolute_uri|urlencode }}"
+                           target="_blank" class="btn btn-outline-secondary btn-sm">
+                            <i class="fab fa-twitter me-2"></i>Twitter
+                        </a>
+                        <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri|urlencode }}&title={{ article.title|urlencode }}"
+                           target="_blank" class="btn btn-outline-secondary btn-sm">
+                            <i class="fab fa-linkedin me-2"></i>LinkedIn
+                        </a>
+                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri|urlencode }}"
+                           target="_blank" class="btn btn-outline-secondary btn-sm">
+                            <i class="fab fa-facebook me-2"></i>Facebook
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</article>
+
+<!-- Related Articles -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5 fw-bold">Related News</h2>
+        <div class="row g-4">
+            {% for related in related_articles %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100">
+                    <img src="{{ related.image.url }}" class="card-img-top" alt="{{ related.title }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ related.title }}</h5>
+                        <p class="card-text text-muted small">
+                            <i class="far fa-calendar-alt me-1"></i>
+                            {{ related.published_date|date:"M j, Y" }}
+                        </p>
+                        <p class="card-text">{{ related.content|striptags|truncatewords:20 }}</p>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <a href="{% url 'news_detail' related.slug %}" class="btn btn-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p class="text-muted">No related articles at the moment.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

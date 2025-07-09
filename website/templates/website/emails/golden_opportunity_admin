@@ -1,0 +1,11 @@
+New Golden Opportunity Inquiry Received:
+
+Name: {{ name }}
+Email: {{ email }}
+Message:
+{{ message }}
+
+Priority: ★★★★★
+Follow up within 24 hours.
+
+Admin link: {{ admin_url }}

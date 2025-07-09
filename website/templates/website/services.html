@@ -1,0 +1,291 @@
+{% extends "website/base.html" %}
+{% load static %}
+
+{% block title %}Services - Kilinto Industrial Park{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+<style>
+    @keyframes blink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+}
+
+.blink {
+    animation: blink 1s infinite;
+}
+
+     .countdown-timer {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .countdown-unit {
+        text-align: center;
+    }
+
+    .countdown-value {
+        font-size: 2rem;
+        font-weight: bold;
+    }
+
+    .countdown-label {
+        display: block;
+        font-size: 1rem;
+    }
+
+</style>
+
+<!-- Services Header -->
+<div style="margin:0 2%; margin-top: 56px;">
+
+<section class="py-5 text-white" style="background-color: #001a33; height: 120px; display: flex; align-items: center;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h3 class="fw-bold mb-1">Our Services</h3>
+                <p class="lead">Comprehensive solutions for pharmaceutical and biotech industries</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Golden Opportunities -->`
+
+{% if golden_opportunities %}
+<section class="golden-offer py-5 bg-light text-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 mx-auto text-center">
+                <i class="bi bi-gem fa-2x mb-3 text-warning"></i>
+                <h4 class="fw-bold mb-4 text-black">Golden Opportunities</h4>
+
+
+                <div id="goldenOpportunityCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        {% for golden_opportunity in golden_opportunities %}
+                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                            <div class="d-flex justify-content-center">
+                                <div class="card text-black border-0 shadow-lg" style="width: 500px; height: auto; background-color:white;">
+                                    <div class="card-body text-start">
+                                        <h5>Exclusive Benefits:</h5>
+                                        <ul class="fa-ul">
+                                            {% for item in golden_opportunity.exclusive_benefits %}
+                                            <li><span class="fa-li"><i class="fas fa-check-circle text-warning"></i></span>{{ item }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+
+                                    <div class="card-body text-start" style="margin-top: -1rem;">
+                                        <h5>Strategic Advantages:</h5>
+                                        <ul class="fa-ul">
+                                            {% for item in golden_opportunity.strategic_advantages %}
+                                            <li><span class="fa-li"><i class="fas fa-check-circle text-warning"></i></span>{{ item }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    <div class="card-footer bg-success p-0" style="height: 0.5rem;"></div>
+                                </div>
+                            </div>
+
+                            <div class="mt-4">
+                                <div class="mb-3 text-center">
+                                    <h5 class="fw-bold mb-4 text-black">Offer expires in:</h5>
+                                    <div class="d-flex justify-content-center gap-4 text-black">
+                                        <div class="countdown-unit">
+                                            <span class="countdown-value blink" style="color:red;">{{ golden_opportunity.months }}</span>
+                                            <span class="countdown-label">Months</span>
+                                        </div>
+                                        <div class="countdown-unit">
+                                            <span class="countdown-value blink" style="color:red;">{{ golden_opportunity.days }}</span>
+                                            <span class="countdown-label">Days</span>
+                                        </div>
+                                        <div class="countdown-unit">
+                                            <span class="countdown-value blink" style="color:red;">{{ golden_opportunity.hours }}</span>
+                                            <span class="countdown-label">Hours</span>
+                                        </div>
+                                    </div>
+                                    {% if golden_opportunity.months < 0 and golden_opportunity.days < 0 and golden_opportunity.hours < 0 %}
+                                    <p class="text-danger fw-bold">EXPIRED</p>
+                                    {% endif %}
+                                </div>
+                                <a href="{% url 'contact' %}?subject=GOLDEN" class="btn btn-warning btn-lg px-4">
+                                    <i class="fas fa-handshake me-2"></i>Apply Now
+                                </a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="position-absolute top-50 start-0 translate-middle-y">
+                        <button class="carousel-control-prev bg-success" type="button" data-bs-target="#goldenOpportunityCarousel" data-bs-slide="prev" style="width: 30px; height: 30px;">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                    </div>
+                    <div class="position-absolute top-50 end-0 translate-middle-y">
+                        <button class="carousel-control-next bg-success" type="button" data-bs-target="#goldenOpportunityCarousel" data-bs-slide="next" style="width: 30px; height: 30px;">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Business Facilities -->
+<section id="facilities" class="py-5">
+    <div class="container">
+
+        <div class="text-center">
+            <div class="d-flex flex-column align-items-center">
+                <i class="bi bi-building fa-2x mb-3 text-success"></i>
+                <h4 class="mb-5 fw-bold">Business Facilities</h4>
+            </div>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+            {% for service in services %}
+                {% if service.service_type == 'FACILITY' %}
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-lg">
+                        <div class="card-body text-center">
+<!--                            <i class="{{ service.icon_type }} fa-3x mb-3 text-success"></i>-->
+                            <h4>{{ service.title }}</h4>
+                            <div class="">
+                                {{ service.description|safe }}
+                            </div>
+                        </div>
+                        <div class="card-footer bg-success p-0" style="height: 0.5rem;"></div>
+                    </div>
+                </div>
+                {% endif %}
+            {% empty %}
+				<div class="col-12 text-center">
+					<p class="lead">No business facilities at the moment.</p>
+				</div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Support Services -->
+<section id="support" class="py-5 bg-light">
+    <div class="container">
+
+        <div class="text-center">
+            <div class="d-flex flex-column align-items-center">
+                <i class="bi bi-people fa-2x mb-3 text-success"></i>
+                <h4 class="mb-5 fw-bold">Support Services</h4>
+            </div>
+        </div>
+
+        <div class="row g-4 justify-content-center">  <!-- Added 'justify-content-center' -->
+            {% for service in services %}
+                {% if service.service_type == 'SUPPORT' %}
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-lg">
+                        <div class="card-body text-center">
+                            <h4>{{ service.title }}</h4>
+                            <div class="">
+                                {{ service.description|safe }}
+                            </div>
+                        </div>
+                        <div class="card-footer bg-success p-0" style="height: 0.5rem;"></div>
+                    </div>
+                </div>
+                {% endif %}
+            {% empty %}
+				<div class="col-12 text-center">
+					<p class="lead">No support services at the moment.</p>
+				</div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Investment Opportunities -->
+<section id="investment" class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center">
+            <div class="d-flex flex-column align-items-center">
+                <i class="bi bi-wallet fa-2x mb-3 text-success"></i>
+                <h4 class="mb-5 fw-bold">Investment Opportunities</h4>
+            </div>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+            {% for service in services %}
+                {% if service.service_type == 'INVESTMENT' %}
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-lg">
+                        <div class="card-body text-center">
+                            <h4>{{ service.title }}</h4>
+                            <div class="">
+                                {{ service.description|safe }}
+                            </div>
+                        </div>
+                        <div class="card-footer bg-success p-0" style="height: 0.5rem;"></div>
+                    </div>
+                </div>
+                {% endif %}
+            {% empty %}
+				<div class="col-12 text-center">
+					<p class="lead">No investment opportunities at the moment.</p>
+				</div>
+            {% endfor %}
+        </div>
+
+        <!-- How to Apply Section -->
+        <div class="row mt-5">
+            <div class="col-lg-8 mx-auto">
+                <div class="card border-success">
+                    <div class="card-header text-white" style="background-color: #198754;">
+                        <h4 class="mb-0">How to Apply</h4>
+                    </div>
+                    <div class="card-body text-dark"  >
+                        <ol class="steps">
+                            <li >
+                                <h5>Initial Inquiry</h5>
+                                <p>Submit your investment interest through our contact form or email.</p>
+                            </li>
+                            <li>
+                                <h5>Document Submission</h5>
+                                <p>Provide required business documents and investment proposal.</p>
+                            </li>
+                            <li>
+                                <h5>Review Process</h5>
+                                <p>Our team will review your application within 14 working days.</p>
+                            </li>
+                            <li>
+                                <h5>Site Visit & Negotiation</h5>
+                                <p>Arrange a site visit and discuss terms with our management.</p>
+                            </li>
+                            <li>
+                                <h5>Final Approval</h5>
+                                <p>Sign agreement and begin your operations at Kilinto.</p>
+                            </li>
+                        </ol>
+                        <div class="text-center mt-4">
+                            <a href="{% url 'contact' %}?subject=INVESTMENT" class="btn btn-success btn-lg">Start Application</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End of How to Apply Section -->
+
+    </div>
+</section>
+</div>
+{% endblock %}

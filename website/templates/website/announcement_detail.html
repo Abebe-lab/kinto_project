@@ -1,0 +1,40 @@
+{% extends "website/base.html" %}
+{% load custom_filters %}
+{% block content %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+<div style="margin:0 2%; margin-top: 56px;">
+
+    <section class="py-5 text-white" style="background-color: #001a33; height: 120px; display: flex; align-items: center;">
+        <div class="container text-center">
+            <h3 class="fw-bold mb-1">{{ announcement.title }}</h3>
+            <p class="lead">Published on: {{ announcement.publish_date|date:"F j, Y" }}</p>
+        </div>
+    </section>
+
+    <!-- Announcement Detail Section -->
+    <section id="announcement-detail" class="py-5">
+<a href="{% url 'resources' %}" class="d-block text-center fs-4 text-decoration-none" style="margin: 0 auto;">
+    <i class="fas fa-arrow-left me-2"></i> Announcements
+</a>
+        <div class="container">
+            <div class="text-center">
+                {% if announcement.image %}
+                    <img src="{{ announcement.image.url }}" alt="Announcement Image" class="img-fluid mb-3">
+                {% endif %}
+                <h4 class="fw-bold">{{ announcement.title }}</h4>
+
+                <p style="text-align: justify;">{{ announcement.content|safe }}</p>
+
+                {% if announcement.docs %}
+                    <a href="{{ announcement.docs.url }}" class="btn btn-success">Download Docs</a>
+                {% endif %}
+
+                {% if announcement.link %}
+                    <a href="{{ announcement.link }}" class="btn btn-success" target="_blank" rel="noopener noreferrer">Visit Link</a>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
