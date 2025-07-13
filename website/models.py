@@ -323,3 +323,12 @@ class FAQ(models.Model):
 
     def __str__(self):
         return self.question
+
+# visiting hours
+class VisitingHour(models.Model):
+    day = models.CharField(max_length=50)
+    hours = models.TextField()
+    notes = models.TextField(blank=True)
+
+    def __str__(self):
+        return self.day

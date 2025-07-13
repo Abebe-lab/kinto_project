@@ -112,6 +112,7 @@ class PartnersView(ListView):
         return context
 
 def contact(request):
+    visiting_hours = VisitingHour.objects.all()
     if request.method == 'POST':
         form = ContactForm(request.POST)
         print(request.POST)  # Debug: Log submitted data
@@ -130,7 +131,7 @@ def contact(request):
             initial = {'subject': 'GOLDEN'}  # Set subject to GOLDEN if available
         form = ContactForm(initial=initial)
 
-    return render(request, 'website/contact.html', {'form': form})
+    return render(request, 'website/contact.html', {'form': form, 'visiting_hours': visiting_hours})
 
 def submit_testimonial(request):
     if request.method == 'POST':

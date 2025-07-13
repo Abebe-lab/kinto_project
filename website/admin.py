@@ -123,3 +123,8 @@ class FAQAdmin(admin.ModelAdmin):
     list_display = ('question', 'category', 'is_featured')
     list_filter = ('is_featured', 'category')
     search_fields = ('question', 'answer')
+
+@admin.register(VisitingHour)
+class VisitingHourAdmin(admin.ModelAdmin):
+    list_display = ('day', 'hours', 'notes')
+    search_fields = ('day',)
