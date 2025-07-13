@@ -236,10 +236,6 @@ class FileDownloadView(View):
 
         # Check the file is inside the base directory
         return os.path.commonpath([base_dir]) == os.path.commonpath([base_dir, file_path])
-# def downloadables(request):
-#     resource_categories = ResourceCategory.objects.all()
-#     downloads = Downloadable.objects.all()  # Adjust to filter based on category if necessary
-#     return render(request, 'website/resources.html', {'resource_categories': resource_categories, 'downloads': downloads})
 def announcement_detail(request, slug):
     announcement = get_object_or_404(Announcement, slug=slug)
     context = {
